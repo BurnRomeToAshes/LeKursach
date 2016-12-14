@@ -1,18 +1,23 @@
 ﻿#include <iostream>
 #include <stdlib.h>
+#include <fstream>
 
 using namespace std;
 
 void insertionSort(int **);
 void selectionSort(int **);
 void mergeSort(int **a, int low, int high);
+void bubbleSort(int **);
+int quickSort(int **);
 void newMatrix(int **);
 void printMatrix(int **);
+void fileOutput(int **);
 
 char choice = 0;
 unsigned short m = 0;
 unsigned short n = 0;
 int ** sortedMatrix = NULL;
+int iterationNumber = -1;
 int main()
 {
 	
@@ -32,7 +37,7 @@ int main()
 	newMatrix(matrix);
 
 	while (choice != 'q') {
-		cout << "Press 1 for Insertion sort\nPress 2 for Selection sort\nPress 3 for Merge sort\nPress 4 to generate new Matrix\nPress P to print the Matrix\nPress Q to quit\n";
+		cout << "Press 1 for Insertion sort\nPress 2 for Selection sort\nPress 3 for Merge sort\nPress 4 for Bubble sort\nPress 5 for Quicksort\nPress 6 to generate new Matrix\nPress 7 to input number of iteations\nPress F for file output\nPress P to print the Matrix\nPress Q to quit\n";
 		cin >> choice;
 		switch (choice) {
 		case '1':
@@ -43,14 +48,29 @@ int main()
 			break;
 		case '3':
 			mergeSort(sortedMatrix, 0, n*m - 1);
+			cout << "Merge sort finished!";
 			break;
 		case '4':
+		
+			break;
+		case '5':
+			
+			break;
+		case '6':
 			newMatrix(matrix);
+			break;
+		case '7':
+			cout << "Please input the number of allowed iterations: ";
+			cin >> iterationNumber;
+			break;
+		case 'f':
+			fileOutput(matrix);
 			break;
 		case 'p':
 			printMatrix(matrix);
 			break;
 		case 'q':
+			fileOutput(matrix);
 			break;
 		 default:
 			cout << "Wrong input!" << endl;
@@ -96,15 +116,25 @@ void printMatrix(int ** matrix) {
 	}
 }
 
-void insertionSort(int ** matrix) {
-		
+void fileOutput(int ** matrix) {
+	ofstream outfile("test.txt");
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			outfile << matrix[i][j] << " ";
+		}
+		outfile << endl;
+	}	
+	outfile.close();
+}
+
+void insertionSort(int ** matrix) {		
 	int tmp = 0;
 	for (int i = 1; i < n*m; i++) {
 		int j = i;
 		while (j > 0 && *matrix[j - 1] > *matrix[j]) {
 			tmp = *matrix[j];
 			*matrix[j] = *matrix[j - 1];
-			*matrix[j--] = tmp;
+			*matrix[--j] = tmp;
 		}
 	}
 	cout << "Insersion sort finished!" << endl;
@@ -172,5 +202,4 @@ void mergeSort(int **a, int low, int high)
 				*a[i + low] = merging[merge1++];
 		}
 	}
-	cout << "Merge sort finished!";
 }
