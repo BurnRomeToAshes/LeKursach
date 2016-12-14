@@ -18,6 +18,7 @@ unsigned short m = 0;
 unsigned short n = 0;
 int ** sortedMatrix = NULL;
 int iterationNumber = -1;
+int mergeIterationCount = 0;
 int main()
 {
 	
@@ -48,7 +49,7 @@ int main()
 			break;
 		case '3':
 			mergeSort(sortedMatrix, 0, n*m - 1);
-			cout << "Merge sort finished!";
+			cout << "Merge sort finished!" << endl;
 			break;
 		case '4':
 		
@@ -129,12 +130,16 @@ void fileOutput(int ** matrix) {
 
 void insertionSort(int ** matrix) {		
 	int tmp = 0;
+	int iterationCount = 0;
 	for (int i = 1; i < n*m; i++) {
 		int j = i;
 		while (j > 0 && *matrix[j - 1] > *matrix[j]) {
-			tmp = *matrix[j];
-			*matrix[j] = *matrix[j - 1];
-			*matrix[--j] = tmp;
+			if (iterationNumber < 0 || iterationCount++ <= iterationNumber)
+			{
+				tmp = *matrix[j];
+				*matrix[j] = *matrix[j - 1];
+				*matrix[--j] = tmp;
+			}
 		}
 	}
 	cout << "Insersion sort finished!" << endl;
@@ -144,6 +149,7 @@ void selectionSort(int ** matrix) {
 	int min = 0;
 	int toSwitch = 0;
 	int tmp = 0;
+	int iterationCount = 0;
 	for (int i = 0; i < m * n; i++)
 	{
 		min = *matrix[i];
@@ -156,13 +162,23 @@ void selectionSort(int ** matrix) {
 				toSwitch = j;
 			}
 		}
-		tmp = *matrix[i];
-		*matrix[i] = *matrix[toSwitch];
-		*matrix[toSwitch] = tmp;
+		if (iterationNumber < 0 || iterationCount++ <= iterationNumber)
+		{
+			tmp = *matrix[i];
+			*matrix[i] = *matrix[toSwitch];
+			*matrix[toSwitch] = tmp;
+		}
 	}
 	cout << "Selection sort finished!" << endl;
 }
 
+void bubbleSort(int ** matrix) {
+
+}
+
+void quickSort(int ** matrix) {
+
+}
 
 void mergeSort(int **a, int low, int high)
 {
@@ -193,13 +209,26 @@ void mergeSort(int **a, int low, int high)
 			if (merge2 <= high - low) {
 				if (merge1 <= mid - low) {
 					if (merging[merge1] > merging[merge2])
+						if (mergeIterationCount++ <= iterationNumber) {
+							*a[i + low] = merging[merge2++];
+						}
+						else {
+							if (mergeIterationCount++ <= iterationNumber) {
+								*a[i + low] = merging[merge1++];
+							}
+						}
+				}
+				else {
+					if (mergeIterationCount++ <= iterationNumber) {
 						*a[i + low] = merging[merge2++];
-					else
-						*a[i + low] = merging[merge1++];
-				} else
-					*a[i + low] = merging[merge2++];
-			} else
-				*a[i + low] = merging[merge1++];
+					}
+				}
+			}
+			else {
+				if (mergeIterationCount++ <= iterationNumber) {
+					*a[i + low] = merging[merge1++];
+				}
+			}
 		}
 	}
 }
