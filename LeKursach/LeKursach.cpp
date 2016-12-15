@@ -8,7 +8,7 @@ void insertionSort(int **);
 void selectionSort(int **);
 void mergeSort(int **a, int low, int high);
 void bubbleSort(int **);
-void quickSort(int **);
+void quickSort(int **, int , int);
 void newMatrix(int **);
 void printMatrix(int **);
 void fileOutput(int **);
@@ -19,6 +19,7 @@ unsigned short n = 0;
 int ** sortedMatrix = NULL;
 int iterationNumber = -1;
 int mergeIterationCount = 0;
+int quickIterationCount = 0;
 int main()
 {
 	
@@ -49,13 +50,16 @@ int main()
 			break;
 		case '3':
 			mergeSort(sortedMatrix, 0, n*m - 1);
+			mergeIterationCount = 0;
 			cout << "Merge sort finished!" << endl;
 			break;
 		case '4':
 			bubbleSort(sortedMatrix);
 			break;
 		case '5':
-			
+			quickSort(sortedMatrix, 0, n*m - 1);
+			quickIterationCount = 0;
+			cout << "Quick sort finished!" << endl;
 			break;
 		case '6':
 			newMatrix(matrix);
@@ -178,7 +182,7 @@ void bubbleSort(int ** matrix) {
 	for (int i = 0; i < n*m; i++) {
 		for (int j = i + 1; j < n*m; j++) {
 			if (*matrix[i] > *matrix[j]) {
-				if (iterationCount++ <= iterationNumber) {
+				if (iterationCount++ <= iterationNumber || iterationNumber < 0) {
 					tmp = *matrix[j];
 					*matrix[j] = *matrix[i];
 					*matrix[i] = tmp;
@@ -189,8 +193,29 @@ void bubbleSort(int ** matrix) {
 	cout << "Bubble sort finished!" << endl;
 }
 
-void quickSort(int ** matrix) {
+void quickSort(int ** matrix, int left, int right) {
+	int i = left;
+	int j = right;
+	int tmp;
+	int pivot = *matrix[(left + right) / 2];
 
+
+	while (i <= j) {
+		while (*matrix[i] < pivot)
+			i++;
+		while (*matrix[j] > pivot)
+			j--;
+		if (i <= j && (quickIterationCount++ < iterationNumber || iterationNumber < 0)) {
+				tmp = *matrix[i];
+				*matrix[i++] = *matrix[j];
+				*matrix[j--] = tmp;
+		}
+	};
+
+	if (left < j)
+		quickSort(matrix, left, j);
+	if (i < right)
+		quickSort(matrix, i, right);
 }
 
 void mergeSort(int **a, int low, int high)
@@ -222,23 +247,23 @@ void mergeSort(int **a, int low, int high)
 			if (merge2 <= high - low) {
 				if (merge1 <= mid - low) {
 					if (merging[merge1] > merging[merge2])
-						if (mergeIterationCount++ <= iterationNumber) {
+						if (mergeIterationCount++ <= iterationNumber || iterationNumber < 0) {
 							*a[i + low] = merging[merge2++];
 						}
 						else {
-							if (mergeIterationCount++ <= iterationNumber) {
+							if (mergeIterationCount++ <= iterationNumber || iterationNumber < 0) {
 								*a[i + low] = merging[merge1++];
 							}
 						}
 				}
 				else {
-					if (mergeIterationCount++ <= iterationNumber) {
+					if (mergeIterationCount++ <= iterationNumber || iterationNumber < 0) {
 						*a[i + low] = merging[merge2++];
 					}
 				}
 			}
 			else {
-				if (mergeIterationCount++ <= iterationNumber) {
+				if (mergeIterationCount++ <= iterationNumber || iterationNumber < 0) {
 					*a[i + low] = merging[merge1++];
 				}
 			}
