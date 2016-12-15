@@ -8,7 +8,7 @@ void insertionSort(int **);
 void selectionSort(int **);
 void mergeSort(int **a, int low, int high);
 void bubbleSort(int **);
-int quickSort(int **);
+void quickSort(int **);
 void newMatrix(int **);
 void printMatrix(int **);
 void fileOutput(int **);
@@ -52,7 +52,7 @@ int main()
 			cout << "Merge sort finished!" << endl;
 			break;
 		case '4':
-		
+			bubbleSort(sortedMatrix);
 			break;
 		case '5':
 			
@@ -173,7 +173,20 @@ void selectionSort(int ** matrix) {
 }
 
 void bubbleSort(int ** matrix) {
-
+	int tmp = 0;
+	int iterationCount = 0;
+	for (int i = 0; i < n*m; i++) {
+		for (int j = i + 1; j < n*m; j++) {
+			if (*matrix[i] > *matrix[j]) {
+				if (iterationCount++ <= iterationNumber) {
+					tmp = *matrix[j];
+					*matrix[j] = *matrix[i];
+					*matrix[i] = tmp;
+				}
+			}
+		}
+	}
+	cout << "Bubble sort finished!" << endl;
 }
 
 void quickSort(int ** matrix) {
