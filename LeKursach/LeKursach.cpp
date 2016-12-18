@@ -22,8 +22,6 @@ int mergeIterationCount = 0;
 int quickIterationCount = 0;
 int main()
 {
-	
-
 	cout << "Please enter m: ";
 	cin >> m;
 	cout << "Please enter n: ";
@@ -32,6 +30,9 @@ int main()
 	int **matrix = new int*[m];
 	for (int i = 0; i < m; i++) {
 		matrix[i] = new int[n];
+		if (matrix[i] == NULL) {
+			cout << "Failed to allocate memory! Exiting\n";
+		}
 	}
 
 	sortedMatrix = new int*[m*n];
@@ -93,7 +94,7 @@ void newMatrix(int ** matrix) {
 	} while (choice != 'm' && choice != 'r');
 
 	if (choice == 'm') {
-		short k = 0;
+		long k = 0;
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
 				cin >> matrix[i][j];
@@ -102,10 +103,10 @@ void newMatrix(int ** matrix) {
 		}
 	}
 	else {
-		short k = 0;
+		long k = 0;
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				matrix[i][j] = rand() % 100 + 1;
+				matrix[i][j] = rand() % 1000 + 1;
 				sortedMatrix[k++] = &matrix[i][j];
 			}
 		}
